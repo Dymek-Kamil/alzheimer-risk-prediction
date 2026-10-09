@@ -1,0 +1,25 @@
+# Default ignored files
+.idea/
+.venv/
+venv/
+__pycache__/
+node_modules/
+*.csv
+/shelf/
+/workspace.xml
+# Ignored default folder with query files
+/queries/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# React Native / Expo
+.expo/
+
+# Pliki środowiskowe (klucze, hasła)
+.env
+
+# Śmieci systemowe macOS / Windows
+.DS_Store
+Thumbs.db
