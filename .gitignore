@@ -4,7 +4,6 @@
 venv/
 __pycache__/
 node_modules/
-*.csv
 /shelf/
 /workspace.xml
 # Ignored default folder with query files
