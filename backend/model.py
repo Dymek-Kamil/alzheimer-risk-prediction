@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.express as px
 import umap
 import seaborn as sns
+import numpy as np
 from sklearn.decomposition import PCA
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.manifold import TSNE
@@ -10,7 +11,6 @@ from sklearn.metrics import classification_report, roc_auc_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
-import numpy as np
 
 dane = pd.read_csv("data/alzheimers_disease_data.csv")
 
