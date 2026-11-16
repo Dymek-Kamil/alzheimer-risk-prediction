@@ -12,11 +12,38 @@ from sklearn.preprocessing import StandardScaler
 
 dane = pd.read_csv("data/alzheimers_disease_data.csv")
 
-# Usunięcie zbędnych kolumn
-columns_to_delete = ["PatientID", "DoctorInCharge", "Diagnosis"]
-X = dane.drop(columns=[col for col in columns_to_delete if col in dane.columns])
-y_raw = dane["Diagnosis"]  # Liczbowe 0 i 1 (bezpieczniejsze dla ROC-AUC)
-y_labels = y_raw.map({0: "Zdrowy (0)", 1: "Alzheimer (1)"})  # Tekstowe do wykresów
+# plt.figure(figsize=(10, 10))
+# sns.countplot(data=dane, x="Diagnosis", hue="Diagnosis")
+# plt.title("liczebność grup badanych")
+# plt.tight_layout()
+# plt.savefig(f'plots/grupyBadane.png', dpi=300, bbox_inches='tight')
+# plt.close()
+#
+# columns = ['Gender', 'Ethnicity', 'EducationLevel', 'Smoking', 'FamilyHistoryAlzheimers', 'CardiovascularDisease', 'Diabetes', 'Depression', 'HeadInjury', 'Hypertension', 'MemoryComplaints', 'BehavioralProblems', 'Confusion', 'Disorientation', 'PersonalityChanges', 'DifficultyCompletingTasks', 'Forgetfulness']
+# for i, col in enumerate(columns):
+#     data = pd.crosstab(dane['Diagnosis'], dane[col])
+#     ax = data.plot(kind='bar', figsize=(10, 10))
+#     plt.title(f'{col} distribution')
+#     plt.xlabel('Diagnosis')
+#     plt.ylabel('Count')
+#     plt.xticks(rotation=0)
+#     plt.tight_layout()
+#     plt.savefig(f'plots/{col}.png', dpi=300, bbox_inches='tight')
+#     plt.close()
+
+# columns = ['BMI', 'AlcoholConsumption', 'PhysicalActivity', 'DietQuality', 'SleepQuality', 'SystolicBP', 'DiastolicBP', 'CholesterolTotal', 'CholesterolLDL', 'CholesterolHDL', 'CholesterolTriglycerides', 'MMSE', 'FunctionalAssessment', 'ADL']
+# for i, col in enumerate(columns):
+#     plt.figure(figsize=(10, 10))
+#     sns.boxplot(data=dane, x="Diagnosis", y=col)
+#     plt.savefig(f'plots/{col}.png')
+#     plt.close()
+#
+# # Usunięcie zbędnych kolumn
+# columns_to_delete = ["PatientID", "DoctorInCharge", "Diagnosis"]
+# X = dane.drop(columns=[col for col in columns_to_delete if col in dane.columns])
+# y_raw = dane["Diagnosis"]  # Liczbowe 0 i 1 (bezpieczniejsze dla ROC-AUC)
+# y_labels = y_raw.map({0: "Zdrowy (0)", 1: "Alzheimer (1)"})  # Tekstowe do wykresów
+
 
 switch = 3
 
