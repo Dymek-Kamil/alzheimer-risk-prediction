@@ -9,6 +9,9 @@ from sklearn.manifold import TSNE
 from sklearn.metrics import classification_report, roc_auc_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import GridSearchCV
 
 dane = pd.read_csv("data/alzheimers_disease_data.csv")
 
@@ -18,12 +21,16 @@ X = dane.drop(columns=[col for col in columns_to_delete if col in dane.columns])
 y_raw = dane["Diagnosis"]  # Liczbowe 0 i 1 (bezpieczniejsze dla ROC-AUC)
 y_labels = y_raw.map({0: "Zdrowy (0)", 1: "Alzheimer (1)"})  # Tekstowe do wykresów
 
-switch = 3
+switch = 0 # 0-raw, 1-pca, 2-tsne, 3-umap
+model = 1 # 1-random forest, 2-svm, 3-kNN
+# best - switch=0, model=1
 
 X = pd.get_dummies(X)
 
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
+if switch == 0:
+    X = X_scaled
 
 if switch == 1:
     pca = PCA(n_components=3)
@@ -113,7 +120,34 @@ X_train, X_test, y_train, y_test = train_test_split(
     X, y_raw, test_size=0.2, random_state=42, stratify=y_raw
 )
 
-final_model = RandomForestClassifier(n_estimators=100, random_state=42)
+if model == 1:
+    final_model = RandomForestClassifier(n_estimators=100, random_state=42)
+elif model == 2:
+    final_model = SVC(kernel="rbf", C=1.0, gamma=0.01, probability=True, random_state=42)
+elif model == 3:
+    final_model = KNeighborsClassifier(n_neighbors=11, weights="uniform", metric="manhattan",p=1)
+
+# SVM GRIDSEARCH
+# param_grid = [
+#     {"kernel": ["linear"], "C": [0.1, 1, 10, 100]},
+#     {"kernel": ["rbf"], "C": [0.1, 1, 10, 100], "gamma": ["scale", 0.01, 0.1, 1]},
+#     {"kernel": ["poly"], "C": [0.1, 1, 10, 100], "gamma": ["scale", 0.01, 0.1, 1]}]
+#
+# grid_search = GridSearchCV(SVC(), param_grid, cv=5, scoring="f1_weighted", n_jobs=-1)
+
+#kNN GRIDSEARCH
+# param_grid = {
+#     "n_neighbors": [3, 5, 7, 9, 11, 15, 20, 25],
+#     "weights": ["uniform", "distance"],
+#     "metric": ["euclidean", "manhattan", "minkowski"],
+#     "p": [1, 2]}
+#
+# grid_search = GridSearchCV(KNeighborsClassifier(), param_grid=param_grid, cv=5, scoring="f1_weighted", n_jobs=-1)
+#
+# grid_search.fit(X_train, y_train)
+# print("Najlepsze parametry:", grid_search.best_params_)
+# print("Najlepszy wynik CV:", grid_search.best_score_)
+
 final_model.fit(X_train, y_train)
 
 y_pred = final_model.predict(X_test)
